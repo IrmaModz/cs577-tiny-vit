@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1791076058.46199 "/Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_Template.tex" "CS577_Proposal_Template.pdf" "CS577_Proposal_Template" 1791076058.77284 0
-  "/Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_Template.tex" 1791076058.18641 4735 0c36fe864d100660a7cb093ecc74eeb5 ""
+["pdflatex"] 1791129541.54654 "/Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_Template.tex" "CS577_Proposal_Template.pdf" "CS577_Proposal_Template" 1791129541.85639 0
+  "/Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_Template.tex" 1791129541.33059 4606 07fd07fa623d018382b745573947ef7c ""
   "/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm" 1246382020 996 a18840b13b499c08ac2de96a99eda4bc ""
   "/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -75,9 +75,9 @@
   "/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1762202785 92959 4fe4b53901cd9cf0166b105073a59d14 ""
   "/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-var/web2c/pdftex/pdflatex.fmt" 1762202793 2234531 87c6f64d6d8be4584fb7f7c9f819ae81 ""
   "/Users/irmamodzgvrishvili/Library/TinyTeX/texmf.cnf" 1748906819.59462 708 85fd07691b6294ba94c59dbc62380410 ""
-  "CS577_Proposal_Template.aux" 1791076058.73602 162 87159b23cce7c2b923b11c85495bbd6d "pdflatex"
-  "CS577_Proposal_Template.out" 1791076058.71527 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "CS577_Proposal_Template.tex" 1791076058.18641 4735 0c36fe864d100660a7cb093ecc74eeb5 ""
+  "CS577_Proposal_Template.aux" 1791129541.81057 162 87159b23cce7c2b923b11c85495bbd6d "pdflatex"
+  "CS577_Proposal_Template.out" 1791129541.7876 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "CS577_Proposal_Template.tex" 1791129541.33059 4606 07fd07fa623d018382b745573947ef7c ""
   (generated)
   "CS577_Proposal_Template.aux"
   "CS577_Proposal_Template.log"

@@ -112,9 +112,9 @@ OUTPUT CS577_Proposal_Template.out
 OUTPUT CS577_Proposal_Template.pdf
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
-INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
+INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
