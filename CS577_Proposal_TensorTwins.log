@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.11.3)  4 OCT 2026 12:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.11.3)  4 OCT 2026 12:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_TensorTwin.tex"
-(/Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_TensorTwin.tex
+**"/Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_TensorTwins.tex"
+(/Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_TensorTwins.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-10-24>
 (/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
@@ -266,8 +266,8 @@ Package hyperref Info: Option `colorlinks' set `true' on input line 4.
  (/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count316
-) (./CS577_Proposal_TensorTwin.aux)
-\openout1 = `CS577_Proposal_TensorTwin.aux'.
+) (./CS577_Proposal_TensorTwins.aux)
+\openout1 = `CS577_Proposal_TensorTwins.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
 LaTeX Font Info:    ... okay on input line 10.
@@ -323,9 +323,9 @@ LaTeX Font Info:    ... okay on input line 10.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring ON on input line 10.
-(./CS577_Proposal_TensorTwin.out) (./CS577_Proposal_TensorTwin.out)
+(./CS577_Proposal_TensorTwins.out) (./CS577_Proposal_TensorTwins.out)
 \@outlinefile=\write3
-\openout3 = `CS577_Proposal_TensorTwin.out'.
+\openout3 = `CS577_Proposal_TensorTwins.out'.
 
 LaTeX Font Info:    Trying to load font information for U+msa on input line 23.
  (/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -336,24 +336,24 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 23.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] (./CS577_Proposal_TensorTwin.aux)
+{/Users/irmamodzgvrishvili/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] (./CS577_Proposal_TensorTwins.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-10-24>
  ***********
-Package rerunfilecheck Info: File `CS577_Proposal_TensorTwin.out' has not changed.
+Package rerunfilecheck Info: File `CS577_Proposal_TensorTwins.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
  10307 strings out of 469559
- 158405 string characters out of 5468989
- 591037 words of memory out of 5000000
+ 158424 string characters out of 5468989
+ 591042 words of memory out of 5000000
  38808 multiletter control sequences out of 15000+600000
  634208 words of font info for 66 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,8n,79p,837b,450s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,8n,79p,838b,450s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on CS577_Proposal_TensorTwin.pdf (2 pages, 97985 bytes).
+Output written on CS577_Proposal_TensorTwins.pdf (2 pages, 97985 bytes).
 PDF statistics:
  56 PDF objects out of 1000 (max. 8388607)
  39 compressed objects within 1 object stream

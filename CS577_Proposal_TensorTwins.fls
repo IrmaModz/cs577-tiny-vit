@@ -2,8 +2,8 @@ PWD /Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tin
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf.cnf
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/web2c/texmf.cnf
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_TensorTwin.tex
-OUTPUT CS577_Proposal_TensorTwin.log
+INPUT /Users/irmamodzgvrishvili/Desktop/Education/Illinois/Fall26/CS 577/cs577-tiny-vit/CS577_Proposal_TensorTwins.tex
+OUTPUT CS577_Proposal_TensorTwins.log
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/base/article.cls
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/base/size10.clo
@@ -97,19 +97,19 @@ INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/graphics/ma
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-INPUT ./CS577_Proposal_TensorTwin.aux
-INPUT ./CS577_Proposal_TensorTwin.aux
-INPUT CS577_Proposal_TensorTwin.aux
-OUTPUT CS577_Proposal_TensorTwin.aux
+INPUT ./CS577_Proposal_TensorTwins.aux
+INPUT ./CS577_Proposal_TensorTwins.aux
+INPUT CS577_Proposal_TensorTwins.aux
+OUTPUT CS577_Proposal_TensorTwins.aux
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/tex/latex/graphics/color.sty
-INPUT ./CS577_Proposal_TensorTwin.out
-INPUT ./CS577_Proposal_TensorTwin.out
-INPUT CS577_Proposal_TensorTwin.out
-INPUT CS577_Proposal_TensorTwin.out
-INPUT ./CS577_Proposal_TensorTwin.out
-INPUT ./CS577_Proposal_TensorTwin.out
-OUTPUT CS577_Proposal_TensorTwin.out
-OUTPUT CS577_Proposal_TensorTwin.pdf
+INPUT ./CS577_Proposal_TensorTwins.out
+INPUT ./CS577_Proposal_TensorTwins.out
+INPUT CS577_Proposal_TensorTwins.out
+INPUT CS577_Proposal_TensorTwins.out
+INPUT ./CS577_Proposal_TensorTwins.out
+INPUT ./CS577_Proposal_TensorTwins.out
+OUTPUT CS577_Proposal_TensorTwins.out
+OUTPUT CS577_Proposal_TensorTwins.pdf
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
@@ -143,9 +143,9 @@ INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsf
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map
-INPUT CS577_Proposal_TensorTwin.aux
-INPUT ./CS577_Proposal_TensorTwin.out
-INPUT ./CS577_Proposal_TensorTwin.out
+INPUT CS577_Proposal_TensorTwins.aux
+INPUT ./CS577_Proposal_TensorTwins.out
+INPUT ./CS577_Proposal_TensorTwins.out
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /Users/irmamodzgvrishvili/Library/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
