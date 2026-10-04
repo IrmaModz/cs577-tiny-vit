@@ -11,38 +11,42 @@
 \begin{center}
 {\large\textbf{CS 577 Deep Learning -- Annotated and Executable Model}}\\[-1pt]
 {\large\textbf{Paper-Selection Proposal}}\\[2pt]
-Team name/number: \answer{tensor twins / 2}\quad Members and Hawk usernames: \answer{Irma Modzgvrishvili- imodzgvrishvili@hawk.illinoistech.edu, Jungwoo Hwang-jhwang24@hawk.illinoistech.edu}\quad Fall 2026
+Team name/number: tensor twins / 2\\
+
+\quad Members and Hawk usernames: Irma Modzgvrishvili- A20597307, Jungwoo Hwang- A20478312\\
+\quad Fall 2026
 \end{center}
 \vspace{-0.5em}
 
-\textbf{Submission rule.} Due October 4, 2026, 11:59 p.m. Central Time. Submit one PDF per team. Replace every blue prompt. Keep the main content to one page; references may use a second page. Preliminary results are not required.
-
 \section*{1. Paper}
 
-\textbf{Full citation and stable link:}\answer{Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, et al. 
-``An Image Is Worth 16x16 Words: Transformers for Image Recognition at Scale.'' 
-\url{https://openreview.net/forum?id=YicbFdNTTy}}\\
-\textbf{Venue and year:} \answer{ICLR, 2021}
+\textbf{Full citation and stable link:} Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, et al. An Image Is Worth 16x16 Words: Transformers for Image Recognition at Scale. \url{https://openreview.net/forum?id=YicbFdNTTy}
 
-\textbf{On the starting paper list?} \answer{Yes.}
+
+\textbf{Venue and year:} ICLR, 2021
+
+\textbf{On the starting paper list?} Yes. This paper fits the project because it introduces a specific deep-learning architecture that can be explained and tested on a small scale.
 
 \section*{2. Problem and central mechanism}
 
 
-\answer{The paper studies whether a Transformer can be used for image classification instead of using a CNN as the main model. The main idea is to split an image into fixed-size patches, convert each patch into an embedding, add positional information and a learnable classification token, and process the full sequence with a Transformer encoder. The final classification-token output is passed through an MLP head to produce the class scores. Our project will explain how this patch-based representation works and test how changing the patch size affects validation accuracy and computational cost in a small Vision Transformer.}
+The paper studies whether a Transformer can be used for image classification instead of using a CNN as the main model. The main idea is to split an image into fixed-size patches, convert each patch into an embedding, add positional and class embedding, and process the patch sequence with a Transformer encoder. Our project will explain how this patch-based representation works and test how changing the patch size affects validation accuracy and computational cost in a small Vision Transformer.
+
 \section*{3. Executable artifact and shape/gradient focus}
 
-\answer{We plan to build a small Vision Transformer in PyTorch using the CIFAR-10 dataset. The input images will have shape $(N, 3, 32, 32)$, where $N$ is the batch size, and the output will have shape $(N, 10)$ because CIFAR-10 has 10 image classes. Each image will be split into small patches, and each patch will be converted into a vector that can be processed by the Transformer. We will explain how the training error is passed backward from the final classification output to the patch-embedding layer.}
+We plan to build a small Vision Transformer in PyTorch using the CIFAR-10 dataset. The input images will have shape $(N, 3, 32, 32)$, where $N$ is the batch size, and the output will have shape $(N, 10)$ because CIFAR-10 has 10 image classes. Each image will be split into small patches, and each patch will be converted into a vector that can be processed by the Transformer. We will explain how the training error is passed backward from the final classification output to the patch-embedding layer.
 
 \section*{4. Correctness evidence and ablation}
 
-\answer{For correctness, we will check that the image is split into the expected number of patches and that the model produces the correct output shape for the 10 CIFAR-10 classes. We will also test whether the model can overfit a very small training batch, which helps confirm that the training pipeline is working. For the ablation, we will compare two patch sizes while keeping the dataset, model size, optimizer, and training budget the same. Our main metric will be validation accuracy, and we will also compare runtime. Even if the larger or smaller patch size does not improve accuracy, the comparison can still show how patch size affects the trade-off between model performance and computational cost.}
+For correctness, we will check that the image is split into the expected number of patches and that the model produces the correct output shape for the 10 CIFAR-10 classes. We will also test whether the model can overfit a very small training batch, which helps confirm that the training pipeline is working. For the ablation, we will compare two patch sizes while keeping the dataset, model size, optimizer, and training budget the same. Our main metric will be validation accuracy, and we will also compare runtime. Even if the larger or smaller patch size does not improve accuracy, the comparison can still show how patch size affects the trade-off between model performance and computational cost.
 
 \section*{5. Feasibility, risks, and roles}
 
-\textbf{Compute/data plan:} \answer{We will use PyTorch with the CIFAR-10 dataset and run the model on Google Colab or a local computer. We expect each small experiment to finish within about 30 minutes, but this is only an estimate and will be checked later. We will measure training or inference time and report parameter count; memory usage will also be reported if available.}
+\textbf{Compute/data plan:} 
+Colab T4 GPU setup using PyTorch, torchvision; downloaded public CIFAR-10 data will remain outside the submission archive. We target a 10-15 minutes run per configuration, using six transformer blocks. We will report hardware, batch size, warm-up, mean inference throughput (images/sec) over at least three short runs, parameter count, and peak GPU memory if available. If utilization is unavailable, parameter count will be the declared proxy.
 
-\textbf{Main risk and fallback:} \answer{The main risk is that training a Vision Transformer from scratch may be slow or may give unstable results on a small dataset. If this happens, we will reduce the number of training examples, model size, or number of training steps while keeping the main ViT mechanism unchanged.}
+\textbf{Main risk and fallback:} 
+Unlike CNN, training ViT from scratch on a small dataset (CIFAR-10) could lead to severe overfitting due to lack of inductive biases such as translation equivariance and locality. If the model tends to overfit too fast on first few epochs, we will add stochastic depth, patch dropout, data augmentation if possible, then report the results.
 
 \vspace{-2pt}
 \begin{center}\small
@@ -50,17 +54,14 @@ Team name/number: \answer{tensor twins / 2}\quad Members and Hawk usernames: \an
 \toprule
 Member & Initial responsibility (responsibilities may overlap) \\
 \midrule
-\answer{Irma} &
-\answer{Paper understanding, CIFAR-10 and patch-processing pipeline, correctness and gradient-flow tests, and efficiency profiling} \\
-
-\answer{ungwoo Hwang} &
-\answer{Paper understanding, Tiny ViT model, training and evaluation pipeline, and patch-size ablation experiments} \\
+Irma & Paper understanding, model architecture implementation (patch projection, class embedding, 1D position embedding), correctness and gradient-flow tests, and efficiency profiling \\
+Jungwoo Hwang & Paper understanding, model architecture implementation (Transformer encoder), training and evaluation pipeline, and patchsize ablation experiments \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \section*{Assistance and generative-AI disclosure}
 
-\answer{Name each tool/person and its purpose. State what the team will verify. If none, state ``None.''}
+Jungwoo Hwang: gemini for paraphrase/grammar check
 
 \end{document}
