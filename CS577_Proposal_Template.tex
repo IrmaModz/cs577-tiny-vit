@@ -1,0 +1,66 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.50in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,enumitem,hyperref,xcolor}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\setlist{nosep,leftmargin=*}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\newcommand{\answer}[1]{\textcolor{blue}{#1}}
+
+\begin{document}
+\begin{center}
+{\large\textbf{CS 577 Deep Learning -- Annotated and Executable Model}}\\[-1pt]
+{\large\textbf{Paper-Selection Proposal}}\\[2pt]
+Team name/number: \answer{tensor twins / 2}\quad Members and Hawk usernames: \answer{Irma Modzgvrishvili- A20597307, Jungwoo Hwang}\quad Fall 2026
+\end{center}
+\vspace{-0.5em}
+
+\textbf{Submission rule.} Due October 4, 2026, 11:59 p.m. Central Time. Submit one PDF per team. Replace every blue prompt. Keep the main content to one page; references may use a second page. Preliminary results are not required.
+
+\section*{1. Paper}
+
+\textbf{Full citation and stable link:}\answer{Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, et al. 
+``An Image Is Worth 16x16 Words: Transformers for Image Recognition at Scale.'' 
+\url{https://openreview.net/forum?id=YicbFdNTTy}}\\
+\textbf{Venue and year:} \answer{ICLR, 2021}
+
+\textbf{On the starting paper list?} \answer{Yes.}
+
+\section*{2. Problem and central mechanism}
+
+
+\answer{The paper studies whether a Transformer can be used for image classification instead of using a CNN as the main model. The main idea is to split an image into fixed-size patches, convert each patch into an embedding, add positional information and a learnable classification token, and process the full sequence with a Transformer encoder. The final classification-token output is passed through an MLP head to produce the class scores. Our project will explain how this patch-based representation works and test how changing the patch size affects validation accuracy and computational cost in a small Vision Transformer.}
+\section*{3. Executable artifact and shape/gradient focus}
+
+\answer{We plan to build a small Vision Transformer in PyTorch using the CIFAR-10 dataset. The input images will have shape $(N, 3, 32, 32)$, where $N$ is the batch size, and the output will have shape $(N, 10)$ because CIFAR-10 has 10 image classes. Each image will be split into small patches, and each patch will be converted into a vector that can be processed by the Transformer. We will explain how the training error is passed backward from the final classification output to the patch-embedding layer.}
+
+\section*{4. Correctness evidence and ablation}
+
+\answer{For correctness, we will check that the image is split into the expected number of patches and that the model produces the correct output shape for the 10 CIFAR-10 classes. We will also test whether the model can overfit a very small training batch, which helps confirm that the training pipeline is working. For the ablation, we will compare two patch sizes while keeping the dataset, model size, optimizer, and training budget the same. Our main metric will be validation accuracy, and we will also compare runtime. Even if the larger or smaller patch size does not improve accuracy, the comparison can still show how patch size affects the trade-off between model performance and computational cost.}
+
+\section*{5. Feasibility, risks, and roles}
+
+\textbf{Compute/data plan:} \answer{We will use PyTorch with the CIFAR-10 dataset and run the model on Google Colab or a local computer. We expect each small experiment to finish within about 30 minutes, but this is only an estimate and will be checked later. We will measure training or inference time and report parameter count; memory usage will also be reported if available.}
+
+\textbf{Main risk and fallback:} \answer{The main risk is that training a Vision Transformer from scratch may be slow or may give unstable results on a small dataset. If this happens, we will reduce the number of training examples, model size, or number of training steps while keeping the main ViT mechanism unchanged.}
+
+\vspace{-2pt}
+\begin{center}\small
+\begin{tabular}{p{0.27\linewidth}p{0.63\linewidth}}
+\toprule
+Member & Initial responsibility (responsibilities may overlap) \\
+\midrule
+\answer{Irma} &
+\answer{Paper understanding, CIFAR-10 and patch-processing pipeline, correctness and gradient-flow tests, and efficiency profiling} \\
+
+\answer{ungwoo Hwang} &
+\answer{Paper understanding, Tiny ViT model, training and evaluation pipeline, and patch-size ablation experiments} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section*{Assistance and generative-AI disclosure}
+
+\answer{Name each tool/person and its purpose. State what the team will verify. If none, state ``None.''}
+
+\end{document}
