@@ -9,6 +9,7 @@ Adapted from: none
 
 from __future__ import annotations
 
+import torch
 from torch import Tensor, nn
 
 
@@ -35,7 +36,9 @@ class PatchDropout(nn.Module):
 
     def __init__(self, rate: float = 0.0):
         super().__init__()
-        # TODO: save rate
+        if not 0.0 <= rate < 1.0:
+            raise ValueError(f"PatchDropout rate must be in [0, 1), but it is {rate}")
+        self.rate = rate
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -44,5 +47,22 @@ class PatchDropout(nn.Module):
         Returns:
             kept tokens, (N, 1 + K, D)
         """
-        # TODO
-        raise NotImplementedError
+        # in eval mode or when it is off, do nothing
+        if not self.training or self.rate == 0.0:
+            return x
+
+        n, t, d = x.shape  # t = 1 + P
+        cls = x[:, :1]  # (N, 1, D)
+        patches = x[:, 1:]  # (N, P, D)
+        p = t - 1
+        k = max(1, round((1 - self.rate) * p))  # how many patches we keep
+
+        # own random order for each sample, take first K -> random K patches
+        # random tensor must be on same device like x
+        keep_idx = torch.rand(n, p, device=x.device).argsort(dim=1)[:, :k]  # (N, K)
+
+        # gather needs index with same number of dims, so repeat index for all D
+        keep_idx = keep_idx.unsqueeze(-1).expand(-1, -1, d)  # (N, K, D)
+        kept = torch.gather(patches, dim=1, index=keep_idx)  # (N, K, D)
+
+        return torch.cat([cls, kept], dim=1)
