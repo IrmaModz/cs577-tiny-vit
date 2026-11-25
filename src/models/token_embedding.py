@@ -8,6 +8,7 @@ Adapted from: none
 
 from __future__ import annotations
 
+import torch
 from torch import Tensor, nn
 
 
@@ -34,7 +35,11 @@ class TokenEmbedding(nn.Module):
 
     def __init__(self, num_patches: int, embed_dim: int, dropout: float = 0.0):
         super().__init__()
-        # TODO: cls_token, pos_embed (nn.Parameter with zeros), dropout layer
+        # one learned CLS vector, same for all images
+        self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))  # (1, 1, D)
+        # one learned position vector for each token: CLS + P patches
+        self.pos_embed = nn.Parameter(torch.zeros(1, num_patches + 1, embed_dim))  # (1, P+1, D)
+        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -43,5 +48,9 @@ class TokenEmbedding(nn.Module):
         Returns:
             tokens with CLS and positions, (N, P + 1, D)
         """
-        # TODO
-        raise NotImplementedError
+        n = x.shape[0]
+        # expand makes N "copies" without copying memory
+        cls = self.cls_token.expand(n, -1, -1)  # (N, 1, D)
+        x = torch.cat([cls, x], dim=1)  # (N, P+1, D), CLS is at index 0
+        x = x + self.pos_embed  # (N, P+1, D) + (1, P+1, D) -> (N, P+1, D)
+        return self.dropout(x)  # (N, P+1, D)
