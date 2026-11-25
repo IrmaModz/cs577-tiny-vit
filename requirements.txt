@@ -1,0 +1,7 @@
+# TODO: pin exact versions (==) after checking what Colab has: run `pip freeze | grep -E "torch|numpy|pandas|matplotlib|pytest"`
+torch
+torchvision
+numpy
+pandas
+matplotlib
+pytest

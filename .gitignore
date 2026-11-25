@@ -1,0 +1,8 @@
+# dataset (downloaded automatically, never commit)
+data/
+...
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+...

@@ -1,0 +1,24 @@
+{
+  "_description": "Our experiments. Each one changes some defaults from configs/config.py. Keys with '_' in start are only comments, load_experiment() skips them. Two ablation runs must be different ONLY in patch_size!",
+
+  "baseline_p4": {
+    "_description": "Baseline, 4x4 patches -> 64 patch tokens, 65 with CLS.",
+    "patch_size": 4
+  },
+
+  "ablation_p8": {
+    "_description": "Ablation, 8x8 patches -> 16 patch tokens, 17 with CLS. All other things same like baseline.",
+    "patch_size": 8
+  },
+
+  "smoke": {
+    "_description": "Very small run on CPU with fake data, for tests and `python main.py smoke`. Should finish in less than 1 minute.",
+    "embed_dim": 32,
+    "depth": 2,
+    "num_heads": 4,
+    "epochs": 1,
+    "batch_size": 32,
+    "amp": false,
+    "device": "cpu"
+  }
+}
