@@ -13,9 +13,17 @@ import pytest
 import torch
 
 from configs.config import ViTConfig
+from src.reproducibility import set_seed
 
 
 @pytest.fixture
+def fixed_seed() -> None:
+    """
+    Runs automatically before every test (autouse=True), no need to ask for it.
+    Calls set_seed(0), so random numbers are same in every run.
+    """
+    set_seed(0)
+
 def tiny_cfg() -> ViTConfig:
     """
     Very small model for fast tests: patch 8 -> 16 patches, D=32, 4 heads, 2 blocks.
@@ -47,7 +55,3 @@ def tiny_batch() -> tuple[torch.Tensor, torch.Tensor]:
     x = torch.randn(4, 3, 32, 32, generator=g)
     y = torch.randint(0, 10, (4,), generator=g)
     return x, y
-
-
-# TODO: when set_seed in src/reproducibility.py works, add autouse fixture here
-# that calls set_seed(0) before every test
