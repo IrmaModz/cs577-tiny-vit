@@ -1,23 +1,10 @@
-"""
-Cut image into square patches and project each patch into vector of size D.
-
-Paper reference: ViT Eq. 1 (x_p E), Section 3.1
-Author: <name>
-Adapted from: none
-"""
-
-from __future__ import annotations
-
-from torch import Tensor, nn
-
-
 class PatchEmbedding(nn.Module):
     """
     Image -> sequence of patch vectors.
 
-    We do it with Conv2d(C, D, kernel_size=p, stride=p), then flatten and transpose.
-    This is same as cutting image into p x p patches, flatten each one to p*p*C numbers,
-    and multiply with matrix E of shape (p*p*C, D). (explain this also in report)
+    We cut image into p x p patches with reshape + permute, flatten each patch to
+    p*p*C numbers, and project with Linear(p*p*C, D). This is matrix E from paper Eq. 1.
+    Same result like Conv2d(C, D, kernel_size=p, stride=p) (test_embeddings.py checks this).
 
     Patch order is row by row: left to right, top to bottom.
 
@@ -37,7 +24,7 @@ class PatchEmbedding(nn.Module):
 
     def __init__(self, image_size: int, patch_size: int, in_channels: int, embed_dim: int):
         super().__init__()
-        # TODO: check image_size % patch_size == 0, save num_patches, create conv layer
+        # TODO: check image_size % patch_size == 0, save num_patches, create Linear(p*p*C, D)
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -46,5 +33,10 @@ class PatchEmbedding(nn.Module):
         Returns:
             patch vectors, (N, P, D)
         """
-        # TODO: give ValueError if H, W is not image_size
+        # TODO:
+        # 1. give ValueError if H, W is not image_size
+        # 2. reshape   (N, C, H, W) -> (N, C, H/p, p, W/p, p)
+        # 3. permute   -> (N, H/p, W/p, C, p, p)      order (0, 2, 4, 1, 3, 5)
+        # 4. reshape   -> (N, P, p*p*C)
+        # 5. Linear    -> (N, P, D)
         raise NotImplementedError

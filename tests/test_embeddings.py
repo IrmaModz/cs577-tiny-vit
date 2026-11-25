@@ -26,10 +26,10 @@ def test_patch_order_is_row_major():
     pytest.skip("TODO")
 
 
-def test_conv_equals_unfold_linear():
+def test_matches_conv2d_reference():
     """
-    Independent implementation: our Conv2d projection must give same result as
-    F.unfold + Linear with same weights (atol 1e-6).
+    Independent implementation: our reshape + Linear projection must give same result
+    as Conv2d(C, D, kernel=p, stride=p) with same weights (atol 1e-6).
     """
     pytest.skip("TODO")
 
