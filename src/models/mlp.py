@@ -28,7 +28,15 @@ class MLP(nn.Module):
 
     def __init__(self, dim: int, hidden_dim: int, dropout: float = 0.0):
         super().__init__()
-        # TODO: two linear layers, GELU, dropout
+
+        # input (N,T,D)
+        self.mlp = nn.Sequential(
+            nn.Linear(dim, hidden_dim), # (N,T,M)
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, dim), # (N,T,D)
+            nn.Dropout(dropout)
+        )
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -37,5 +45,4 @@ class MLP(nn.Module):
         Returns:
             (N, T, D)
         """
-        # TODO
-        raise NotImplementedError
+        return self.mlp(x)

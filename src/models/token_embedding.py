@@ -9,7 +9,8 @@ Adapted from: none
 from __future__ import annotations
 
 from torch import Tensor, nn
-
+import torch
+import numpy as np
 
 class TokenEmbedding(nn.Module):
     """
@@ -34,7 +35,15 @@ class TokenEmbedding(nn.Module):
 
     def __init__(self, num_patches: int, embed_dim: int, dropout: float = 0.0):
         super().__init__()
-        # TODO: cls_token, pos_embed (nn.Parameter with zeros), dropout layer
+        self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
+
+        # static positional encoding / might change to learnable as paper
+        pos_embed = sinusoidal_positions(num_patches+1, embed_dim)
+        pos_embed = torch.tensor(pos_embed, dtype=torch.float32).unsqueeze(0)
+
+        self.register_buffer("pos_embedding", pos_embed)
+
+        self.dropout = nn.Dropout(dropout)
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -43,5 +52,33 @@ class TokenEmbedding(nn.Module):
         Returns:
             tokens with CLS and positions, (N, P + 1, D)
         """
-        # TODO
-        raise NotImplementedError
+        N = x.shape[0]
+
+        # copy cls_token as number of batch
+        cls_token = self.cls_token.expand(N, -1, -1)
+
+        # concat
+        x = torch.cat((cls_token, x), dim=1)
+
+        #pos encoding
+        x = x + self.pos_embedding
+
+        # dropout
+        x = self.dropout(x)
+        return x
+
+def sinusoidal_positions(length: int, model_dim: int) -> np.ndarray:
+    if model_dim%2 != 0:
+        raise ValueError("model_dim should be even")
+
+    pe = np.zeros((length, model_dim))
+
+    m = np.arange(model_dim/2)
+    p = np.arange(length).reshape(-1, 1)
+
+    wm = np.power(10000., -(2*m)/model_dim)
+
+    pe[:, 0::2] = np.sin(p*wm)
+    pe[:, 1::2] = np.cos(p*wm)
+
+    return pe
