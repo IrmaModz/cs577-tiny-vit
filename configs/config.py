@@ -11,12 +11,14 @@ Adapted from: none
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+import json
+from dataclasses import asdict, dataclass, fields
 from pathlib import Path
 
 # experiments.json is in same folder as this file
 DEFAULT_EXPERIMENTS_PATH = Path(__file__).with_name("experiments.json")
 
+VALID_DEVICES = ("auto", "cpu", "cuda")
 
 # ---------------------------------------------------------------------------
 # Model settings
@@ -68,30 +70,50 @@ class ViTConfig:
             - embed_dim can not be divided by num_heads
             - some rate (dropout, attn_dropout, drop_path_rate, patch_dropout_rate) is not in [0, 1)
         """
-        # TODO: write these checks. for now we leave it empty (pass),
-        # otherwise nobody can create config and other people get blocked
-        pass
+        # sizes must be bigger than 0, otherwise below we divide by 0 and get crash
+        for name in ("image_size", "in_channels", "num_classes", "patch_size",
+                     "embed_dim", "depth", "num_heads"):
+            value = getattr(self, name)
+            if value <= 0:
+                raise ValueError(f"ViTConfig.{name} must be bigger than 0, but it is {value}")
+        if self.mlp_ratio <= 0:
+            raise ValueError(f"ViTConfig.mlp_ratio must be bigger than 0, but it is {self.mlp_ratio}")
+
+        if self.image_size % self.patch_size != 0:
+            raise ValueError(
+                f"image_size ({self.image_size}) can not be divided by "
+                f"patch_size ({self.patch_size})"
+            )
+        if self.embed_dim % self.num_heads != 0:
+            raise ValueError(
+                f"embed_dim ({self.embed_dim}) can not be divided by "
+                f"num_heads ({self.num_heads})"
+            )
+
+        for name in ("dropout", "attn_dropout", "drop_path_rate", "patch_dropout_rate"):
+            rate = getattr(self, name)
+            if not 0.0 <= rate < 1.0:
+                raise ValueError(f"ViTConfig.{name} must be in [0, 1), but it is {rate}")
 
     @property
     def num_patches(self) -> int:
         """P = (image_size / patch_size) ** 2. for baseline 64, for p=8 it is 16."""
-        raise NotImplementedError
+        return (self.image_size // self.patch_size) ** 2
 
     @property
     def num_tokens(self) -> int:
         """T = P + 1, because we add CLS token. baseline gives 65."""
-        raise NotImplementedError
+        return self.num_patches + 1
 
     @property
     def head_dim(self) -> int:
         """d_h = D / h. baseline gives 32."""
-        raise NotImplementedError
+        return self.embed_dim // self.num_heads
 
     @property
     def mlp_dim(self) -> int:
         """M = int(mlp_ratio * D). baseline gives 512."""
-        raise NotImplementedError
-
+        return int(self.mlp_ratio * self.embed_dim)
 
 # ---------------------------------------------------------------------------
 # Training settings
@@ -147,8 +169,26 @@ class TrainConfig:
             - device is not "auto", "cpu" or "cuda"
         Also seeds should become tuple (from JSON it comes as list).
         """
-        # TODO: write these checks. empty for now, same reason like in ViTConfig
-        pass
+        for name in ("epochs", "batch_size", "val_size"):
+            value = getattr(self, name)
+            if value <= 0:
+                raise ValueError(f"TrainConfig.{name} must be bigger than 0, but it is {value}")
+
+        if self.warmup_epochs < 0:
+            raise ValueError(f"TrainConfig.warmup_epochs can not be negative, but it is {self.warmup_epochs}")
+        if self.warmup_epochs > self.epochs:
+            raise ValueError(
+                f"warmup_epochs ({self.warmup_epochs}) can not be bigger than "
+                f"epochs ({self.epochs})"
+            )
+
+        if self.device not in VALID_DEVICES:
+            raise ValueError(
+                f"TrainConfig.device must be 'auto', 'cpu' or 'cuda', but it is {self.device!r}"
+            )
+
+        # from JSON seeds come as list, we make it tuple
+        self.seeds = tuple(int(s) for s in self.seeds)
 
 
 # ---------------------------------------------------------------------------
@@ -177,9 +217,43 @@ def load_experiment(
         ValueError: if some key (not starting with "_") is not field in ViTConfig or
                     TrainConfig. this is to catch typos!
     """
-    # TODO: read json, skip "_" keys, put other keys to correct class,
-    # give error for unknown keys
-    raise NotImplementedError
+    with open(path, encoding="utf-8") as f:
+        experiments = json.load(f)
+
+    if name not in experiments:
+        known = sorted(k for k in experiments if not k.startswith("_"))
+        raise KeyError(f"No experiment with name {name!r} in {path}. We have: {known}")
+
+    overrides = experiments[name]
+    if not isinstance(overrides, dict):
+        raise ValueError(f"Experiment {name!r} must be {{...}} in JSON, but it is {type(overrides).__name__}")
+
+    model_fields = {f.name for f in fields(ViTConfig)}
+    train_fields = {f.name for f in fields(TrainConfig)}
+
+    model_kwargs: dict = {}
+    train_kwargs: dict = {}
+    unknown: list[str] = []
+    for key, value in overrides.items():
+        if key.startswith("_"):
+            continue  # comment, like "_description"
+        if key in model_fields:
+            model_kwargs[key] = value
+        elif key in train_fields:
+            train_kwargs[key] = value
+        else:
+            unknown.append(key)
+
+    if unknown:
+        raise ValueError(
+            f"Unknown key(s) in experiment {name!r}: {unknown}. "
+            f"Maybe typo? Key must be field of ViTConfig or TrainConfig."
+        )
+
+    # here __post_init__ runs, so wrong values give error already here
+    model_cfg = ViTConfig(**model_kwargs)
+    train_cfg = TrainConfig(**train_kwargs)
+    return model_cfg, train_cfg
 
 
 def config_to_dict(model_cfg: ViTConfig, train_cfg: TrainConfig) -> dict:
@@ -189,5 +263,6 @@ def config_to_dict(model_cfg: ViTConfig, train_cfg: TrainConfig) -> dict:
     Returns:
         {"model": {...ViTConfig fields...}, "train": {...TrainConfig fields...}}
     """
-    # TODO: dataclasses.asdict can help here
-    raise NotImplementedError
+    train = asdict(train_cfg)
+    train["seeds"] = list(train["seeds"])  # tuple -> list, same like in JSON
+    return {"model": asdict(model_cfg), "train": train}
