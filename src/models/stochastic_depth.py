@@ -43,10 +43,10 @@ class DropPath(nn.Module):
         if not self.training or self.p == 0.0:
             return x
 
-        N, T, D = x.shape
+        N, _, _ = x.shape
 
-        mask = torch.rand(N, 1, 1, device=x.device) < (1.0-self.p)
-        x = x * mask / (1.0-self.p)
+        mask = torch.rand(N, 1, 1, device=x.device) < (1.0-self.p) # (N,1,1)
+        x = x * mask / (1.0-self.p) # (N,T,D) broadcasted
 
         return x
 
