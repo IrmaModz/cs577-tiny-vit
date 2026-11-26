@@ -31,6 +31,7 @@ from src.training.train import train, overfit_batch
 from src.reproducibility import set_seed, get_device
 from src.models.vit import ViT
 from src.experiments.profiling import run_profiling
+from src.experiments.ablation import run_ablation
 
 DEFAULT_EXPERIMENTS = ["baseline_p4", "ablation_p8"]
 
@@ -113,8 +114,10 @@ def cmd_train(args: argparse.Namespace) -> None:
 
 def cmd_ablate(args: argparse.Namespace) -> None:
     """run_ablation(...) from src/experiments/ablation.py."""
-    # TODO (Jungwoo): needs src/experiments/ablation.py
-    raise NotImplementedError
+    run_ablation(
+        experiments=args.experiments,
+        seeds=args.seeds
+    )
 
 
 def cmd_profile(args: argparse.Namespace) -> None:
