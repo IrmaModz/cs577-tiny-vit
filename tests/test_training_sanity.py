@@ -35,7 +35,7 @@ def test_initial_loss_close_to_ln10(tiny_cfg, tiny_batch):
 
 
 def test_overfit_tiny_batch(tiny_cfg):
-    """overfit_batch on 32 fixed fake images reaches 100% train acc / loss < 0.05 in 300 steps."""
+    """overfit_batch on 32 fixed fake images reaches 100% train acc / loss < 0.05 in 500 steps."""
     model = ViT(tiny_cfg)
 
     #fake images and labels
@@ -66,8 +66,6 @@ def test_zero_lr_does_not_learn(tiny_cfg):
     #overfit/train the model with 0 lr
     losses = overfit_batch(model, image_batch, label_batch, 5, lr=0)
     expect = [losses[0] for _ in range(len(losses))]
-
-    trained_params = [params.detach().clone() for params in model.parameters()]
 
     # verify model did not learned
     assert losses == pytest.approx(expect, abs=1e-6)

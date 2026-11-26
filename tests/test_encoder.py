@@ -96,16 +96,15 @@ def test_depth_zero_is_only_layernorm(tiny_cfg):
     N, T, D = 2, 10, tiny_cfg.embed_dim
     x = torch.randn(N, T, D)
 
-    #new_cfg = replace(tiny_cfg, depth=0)
-    #encoder = Encoder(new_cfg)
-#
-    #encoder.eval()
-#
-    #out = encoder(x)
-    #expect = encoder.layer_norm(x)
-#
-    #assert torch.equal(out, expect)
-    # ValueError: ViTConfig.depth must be bigger than 0, but it is 0
+    new_cfg = replace(tiny_cfg, depth=0)
+    encoder = Encoder(new_cfg)
+
+    encoder.eval()
+
+    out = encoder(x)
+    expect = encoder.layer_norm(x)
+
+    assert torch.equal(out, expect)
 
 
 def test_eval_is_deterministic(tiny_cfg):
