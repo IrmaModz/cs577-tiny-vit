@@ -24,7 +24,7 @@ def test_patch_embedding_shape(patch_size):
     test_embed = PatchEmbedding(image_size=H, patch_size=patch_size, in_channels=C, embed_dim=D)
     x = torch.ones(N, C, H, W)
     out = test_embed(x)
-    assert test_embed.num_patches == (32 / patch_size) ** 2
+    assert test_embed.num_patches == P
     assert out.shape == (N, P, D)
 
 
