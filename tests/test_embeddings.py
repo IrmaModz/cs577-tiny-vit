@@ -100,6 +100,16 @@ def test_token_embedding_adds_cls_and_positions():
     assert torch.allclose(diff, emb.pos_embed[:, 1:].expand_as(diff), atol=1e-6)
 
 
+@pytest.mark.parametrize("num_patches", [64, 16])  # p=4 and p=8
+def test_token_embedding_param_count_and_zeros(num_patches):
+    """Number of parameters == D + (P+1) * D, and cls_token, pos_embed start as zeros."""
+    D = 32
+    emb = TokenEmbedding(num_patches=num_patches, embed_dim=D)
+    assert sum(p.numel() for p in emb.parameters()) == D + (num_patches + 1) * D
+    assert torch.count_nonzero(emb.cls_token) == 0
+    assert torch.count_nonzero(emb.pos_embed) == 0
+
+
 def test_wrong_input_size_raises():
     """Image that is not 32x32 must give ValueError."""
     test_embed = PatchEmbedding(image_size=32, patch_size=4, in_channels=3, embed_dim=8)
