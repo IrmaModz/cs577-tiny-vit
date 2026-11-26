@@ -37,6 +37,8 @@ class MultiHeadSelfAttention(nn.Module):
 
     def __init__(self, dim: int, num_heads: int, attn_dropout: float = 0.0, proj_dropout: float = 0.0):
         super().__init__()
+
+        assert dim % num_heads == 0
         self.dim = dim
         self.num_heads = num_heads
         self.attn_dropout = nn.Dropout(attn_dropout)
@@ -45,8 +47,10 @@ class MultiHeadSelfAttention(nn.Module):
         # initialize qkv and fc weights
         self.qkv_weights = nn.Linear(dim, 3*dim)
         self.linear1 = nn.Linear(self.dim, self.dim)
-
-        assert dim % num_heads == 0
+        
+        self.d_h = dim/num_heads
+        self.scale = self.d_h ** (-0.5)
+    
 
     def forward(self, x: Tensor, return_attn: bool = False) -> Tensor | tuple[Tensor, Tensor]:
         """
@@ -63,13 +67,12 @@ class MultiHeadSelfAttention(nn.Module):
         q, k, v = qkv.chunk(3, dim=-1) # (N,T,D)
 
         # To (N,num_heads,T,d_h)
-        d_h = self.dim//self.num_heads
-        q = q.reshape(N, T, self.num_heads, d_h).transpose(1, 2)
-        k = k.reshape(N, T, self.num_heads, d_h).transpose(1, 2)
-        v = v.reshape(N, T, self.num_heads, d_h).transpose(1, 2)
+        q = q.reshape(N, T, self.num_heads, int(self.d_h)).transpose(1, 2)
+        k = k.reshape(N, T, self.num_heads, int(self.d_h)).transpose(1, 2)
+        v = v.reshape(N, T, self.num_heads, int(self.d_h)).transpose(1, 2)
 
         # (N,num_heads,T,T)
-        scores = q @ k.transpose(-2, -1) * d_h**(-0.5)
+        scores = q @ k.transpose(-2, -1) * self.scale
 
         attn = torch.softmax(scores, dim=-1)
         attn = self.attn_dropout(attn)

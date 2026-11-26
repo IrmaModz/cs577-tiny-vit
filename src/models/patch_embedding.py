@@ -39,13 +39,14 @@ class PatchEmbedding(nn.Module):
     def __init__(self, image_size: int, patch_size: int, in_channels: int, embed_dim: int):
         super().__init__()
 
-        assert image_size % patch_size == 0
+        if image_size % patch_size != 0:
+            raise ValueError("image_size should be divided by patch_size")
 
         self.image_size = image_size
         self.patch_size = patch_size
         self.in_channels = in_channels
 
-        self.num_patches = (image_size // patch_size)**2
+        self.num_patches = (image_size / patch_size)**2
         self.patch_dim = self.in_channels * self.patch_size**2
 
         self.linear1 = nn.Linear(self.patch_dim, embed_dim)
