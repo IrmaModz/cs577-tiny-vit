@@ -20,7 +20,8 @@ from torchvision.datasets import CIFAR10
 from torch.utils.data import DataLoader, Subset, TensorDataset
 
 # mean and std of CIFAR-10 train images, per channel (R, G, B)
-# TODO: double check these numbers and write source in README
+# original CIFAR-10 training images scaled to [0, 1].
+# See README for the dataset source and calculation method.
 CIFAR10_MEAN: tuple[float, float, float] = (0.4914, 0.4822, 0.4465)
 CIFAR10_STD: tuple[float, float, float] = (0.2470, 0.2435, 0.2616)
 

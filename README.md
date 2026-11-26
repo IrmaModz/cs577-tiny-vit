@@ -11,6 +11,19 @@
 - `docs/report/` — final report (LaTeX)
 - `docs/proposal/` — submitted proposal
 
+## Date preprocess
+
+The channel-wise mean and standard deviation were computed over
+all pixels of the 50,000 original training images after scaling
+pixel values to [0, 1].
+
+- Mean (RGB): (0.4914, 0.4822, 0.4465)
+- Std (RGB): (0.2470, 0.2435, 0.2616)
+
+The values were verified using NumPy.
+
+Dataset source: [Official CIFAR-10 dataset](https://www.cs.toronto.edu/~kriz/cifar.html)
+
 ## Results folder
 
 All small output files from our experiments are saved here. They are part of the
