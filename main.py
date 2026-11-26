@@ -22,16 +22,8 @@ from __future__ import annotations
 
 import argparse
 import csv
-import torch
 import json
-import matplotlib.pyplot as plt
 from pathlib import Path
-from configs.config import load_experiment
-from src.training.train import train, overfit_batch
-from src.reproducibility import set_seed, get_device
-from src.models.vit import ViT
-from src.experiments.profiling import run_profiling
-from src.experiments.ablation import run_ablation
 
 DEFAULT_EXPERIMENTS = ["baseline_p4", "ablation_p8"]
 
@@ -83,6 +75,9 @@ def build_parser() -> argparse.ArgumentParser:
 def cmd_smoke(args: argparse.Namespace) -> None:
     """load_experiment("smoke") -> train(..., fake=True). Writes <out_dir>/smoke_seed0.json."""
     # Load smoke experiment configurations
+    from configs.config import load_experiment
+    from src.training.train import train
+
     model_cfg, train_cfg = load_experiment("smoke")
 
     # Run the training pipeline using fake data
@@ -99,6 +94,9 @@ def cmd_smoke(args: argparse.Namespace) -> None:
 def cmd_train(args: argparse.Namespace) -> None:
     """load_experiment(args.experiment) -> train(...) for one seed."""
     # Load model and training configurations
+    from configs.config import load_experiment
+    from src.training.train import train
+
     model_cfg, train_cfg = load_experiment(args.experiment)
 
     # Train the model on the real CIFAR-10 dataset
@@ -114,6 +112,8 @@ def cmd_train(args: argparse.Namespace) -> None:
 
 def cmd_ablate(args: argparse.Namespace) -> None:
     """run_ablation(...) from src/experiments/ablation.py."""
+    from src.experiments.ablation import run_ablation
+
     run_ablation(
         experiments=args.experiments,
         seeds=args.seeds
@@ -122,6 +122,8 @@ def cmd_ablate(args: argparse.Namespace) -> None:
 
 def cmd_profile(args: argparse.Namespace) -> None:
     """run_profiling(...) from src/experiments/profiling.py."""
+    from src.experiments.profiling import run_profiling
+
     run_profiling(experiments=args.experiments)
 
 
@@ -130,6 +132,15 @@ def cmd_sanity(args: argparse.Namespace) -> None:
     overfit_batch on 32 fake images, save loss curve:
     results/sanity/overfit_curve.json and docs/figures/overfit.pdf
     """
+
+    import torch
+    import matplotlib.pyplot as plt
+
+    from configs.config import load_experiment
+    from src.training.train import overfit_batch
+    from src.reproducibility import set_seed, get_device
+    from src.models.vit import ViT
+
     set_seed(0)
     model_cfg, train_cfg = load_experiment("baseline_p4")
     device = get_device(train_cfg.device)
