@@ -1,7 +1,6 @@
-# TODO: pin exact versions (==) after checking what Colab has: run `pip freeze | grep -E "torch|numpy|pandas|matplotlib|pytest"`
-torch
-torchvision
-numpy
-pandas
-matplotlib
-pytest
+torch==2.14.1+cu130
+torchvision==0.29.1+cu130
+numpy==2.4.6
+pandas==2.2.3
+matplotlib==3.10.0
+pytest==matplotlib==3.10.0
