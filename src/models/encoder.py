@@ -12,6 +12,9 @@ from torch import Tensor, nn
 
 from configs.config import ViTConfig
 
+from src.models.attention import MultiHeadSelfAttention as mha
+from src.models.mlp import MLP as mlp
+import src.models.stochastic_depth as stochastic_depth
 
 class TransformerBlock(nn.Module):
     """
@@ -42,7 +45,16 @@ class TransformerBlock(nn.Module):
         drop_path: float = 0.0,
     ):
         super().__init__()
-        # TODO: 2 LayerNorms, MultiHeadSelfAttention, MLP, DropPath
+
+        self.drop_path = stochastic_depth.DropPath(drop_path)
+
+        # Attention
+        self.layer_norm1 = nn.LayerNorm(dim)
+        self.mha = mha(dim, num_heads, attn_dropout, dropout)
+
+        # MLP
+        self.layer_norm2 = nn.LayerNorm(dim)
+        self.mlp = mlp(dim, mlp_dim, dropout)
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -51,8 +63,13 @@ class TransformerBlock(nn.Module):
         Returns:
             (N, T, D)
         """
-        # TODO
-        raise NotImplementedError
+        # Attention (N,T,D)
+        x = x + self.drop_path(self.mha(self.layer_norm1(x)))
+
+        # MLP (N,T,D)
+        x = x + self.drop_path(self.mlp(self.layer_norm2(x)))
+
+        return x
 
 
 class Encoder(nn.Module):
@@ -74,7 +91,23 @@ class Encoder(nn.Module):
 
     def __init__(self, cfg: ViTConfig):
         super().__init__()
-        # TODO: nn.ModuleList of TransformerBlock, final LayerNorm
+
+        # stochastic depth probability lists
+        drop_probs = stochastic_depth.drop_path_schedule(cfg.drop_path_rate, cfg.depth)
+
+        # Build transformer blocks
+        self.blocks = nn.ModuleList([
+            TransformerBlock(dim=cfg.embed_dim,
+                             num_heads=cfg.num_heads,
+                             mlp_dim=int(cfg.embed_dim*cfg.mlp_ratio),
+                             dropout=cfg.dropout,
+                             attn_dropout=cfg.attn_dropout,
+                             drop_path=drop_probs[i])
+            for i in range(cfg.depth)
+        ])
+
+        # Final layer norm
+        self.layer_norm = nn.LayerNorm(cfg.embed_dim)
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -83,5 +116,7 @@ class Encoder(nn.Module):
         Returns:
             LN(z_L), (N, T, D)
         """
-        # TODO
-        raise NotImplementedError
+        for block in self.blocks:
+            x = block(x)
+        x = self.layer_norm(x)
+        return x
