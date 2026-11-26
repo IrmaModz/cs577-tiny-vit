@@ -1,5 +1,5 @@
 """
-Shared fixtures for all tests: tiny model config and small fake batch.
+Shared fixtures for all tests: tiny model config, small fake batch and fixed seed
 Everything here is small so whole test suite runs on CPU in less than 2 minutes.
 
 Paper reference: none
@@ -16,7 +16,7 @@ from configs.config import ViTConfig
 from src.reproducibility import set_seed
 
 
-@pytest.fixture
+@pytest.fixture(autouse=True)
 def fixed_seed() -> None:
     """
     Runs automatically before every test (autouse=True), no need to ask for it.
@@ -24,6 +24,7 @@ def fixed_seed() -> None:
     """
     set_seed(0)
 
+@pytest.fixture
 def tiny_cfg() -> ViTConfig:
     """
     Very small model for fast tests: patch 8 -> 16 patches, D=32, 4 heads, 2 blocks.
