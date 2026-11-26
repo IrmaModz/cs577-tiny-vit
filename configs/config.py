@@ -72,10 +72,13 @@ class ViTConfig:
         """
         # sizes must be bigger than 0, otherwise below we divide by 0 and get crash
         for name in ("image_size", "in_channels", "num_classes", "patch_size",
-                     "embed_dim", "depth", "num_heads"):
+                     "embed_dim", "num_heads"):
             value = getattr(self, name)
             if value <= 0:
                 raise ValueError(f"ViTConfig.{name} must be bigger than 0, but it is {value}")
+        if self.depth < 0:
+            raise ValueError(f"ViTConfig.depth can not be negative, but it is {self.depth}")
+
         if self.mlp_ratio <= 0:
             raise ValueError(f"ViTConfig.mlp_ratio must be bigger than 0, but it is {self.mlp_ratio}")
 
