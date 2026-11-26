@@ -12,6 +12,11 @@ from src.models.patch_embedding import PatchEmbedding
 from torch import nn
 import torch
 import pytest
+import torch
+from torch import nn
+
+from src.models.patch_embedding import PatchEmbedding
+from src.models.token_embedding import TokenEmbedding
 
 
 @pytest.mark.parametrize("patch_size", [4, 8])
@@ -111,4 +116,6 @@ def test_token_embedding_adds_cls_and_positions():
 
 def test_wrong_input_size_raises():
     """Image that is not 32x32 must give ValueError."""
-    pytest.skip("TODO")
+    test_embed = PatchEmbedding(image_size=32, patch_size=4, in_channels=3, embed_dim=8)
+    with pytest.raises(ValueError):
+        test_embed(torch.randn(2, 3, 28, 28))  # 28x28 instead of 32x32
