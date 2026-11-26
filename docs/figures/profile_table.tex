@@ -1,0 +1,11 @@
+% made by src/experiments/profiling.py, dont edit by hand
+\begin{tabular}{llrrrrrr}
+\toprule
+Experiment & Mode & Tokens & ms/batch & images/s & Peak mem (MB) & Params & GFLOPs/img \\
+\midrule
+baseline\_p4 & inference & 65 & 6.3 $\pm$ 0.0 & 20,443 & 63 & 1,205,898 & 0.167 \\
+baseline\_p4 & train & 65 & 20.0 $\pm$ 0.5 & 6,404 & 507 & 1,205,898 & 0.167 \\
+ablation\_p8 & inference & 17 & 4.2 $\pm$ 0.0 & 30,643 & 35 & 1,218,186 & 0.042 \\
+ablation\_p8 & train & 17 & 17.0 $\pm$ 0.4 & 7,546 & 151 & 1,218,186 & 0.042 \\
+\bottomrule
+\end{tabular}
