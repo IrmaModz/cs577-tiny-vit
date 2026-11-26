@@ -29,7 +29,8 @@ class ClassificationHead(nn.Module):
 
     def __init__(self, embed_dim: int, num_classes: int):
         super().__init__()
-        # TODO: one linear layer
+        # one linear layer. no own weight init here, it is done in vit.py
+        self.linear = nn.Linear(embed_dim, num_classes)
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -38,5 +39,5 @@ class ClassificationHead(nn.Module):
         Returns:
             logits, (N, num_classes)
         """
-        # TODO
-        raise NotImplementedError
+        cls = x[:, 0]  # (N, T, D) -> (N, D), only CLS token, other tokens are not used
+        return self.linear(cls)  # (N, D) -> (N, num_classes)
