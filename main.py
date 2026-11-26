@@ -22,7 +22,15 @@ from __future__ import annotations
 
 import argparse
 import csv
+import torch
+import json
+import matplotlib.pyplot as plt
 from pathlib import Path
+from configs.config import load_experiment
+from src.training.train import train, overfit_batch
+from src.reproducibility import set_seed, get_device
+from src.models.vit import ViT
+from src.experiments.profiling import run_profiling
 
 DEFAULT_EXPERIMENTS = ["baseline_p4", "ablation_p8"]
 
@@ -73,14 +81,34 @@ def build_parser() -> argparse.ArgumentParser:
 
 def cmd_smoke(args: argparse.Namespace) -> None:
     """load_experiment("smoke") -> train(..., fake=True). Writes <out_dir>/smoke_seed0.json."""
-    # TODO (Jungwoo): needs train() from src/training/train.py
-    raise NotImplementedError
+    # Load smoke experiment configurations
+    model_cfg, train_cfg = load_experiment("smoke")
+
+    # Run the training pipeline using fake data
+    train(
+        model_cfg=model_cfg,
+        train_cfg=train_cfg,
+        seed=0,
+        experiment="smoke",
+        out_dir=args.out_dir,
+        fake=True
+    )
 
 
 def cmd_train(args: argparse.Namespace) -> None:
     """load_experiment(args.experiment) -> train(...) for one seed."""
-    # TODO (Jungwoo): needs train() from src/training/train.py
-    raise NotImplementedError
+    # Load model and training configurations
+    model_cfg, train_cfg = load_experiment(args.experiment)
+
+    # Train the model on the real CIFAR-10 dataset
+    train(
+        model_cfg=model_cfg,
+        train_cfg=train_cfg,
+        seed=args.seed,
+        experiment=args.experiment,
+        out_dir=args.out_dir,
+        fake=False
+    )
 
 
 def cmd_ablate(args: argparse.Namespace) -> None:
@@ -91,8 +119,7 @@ def cmd_ablate(args: argparse.Namespace) -> None:
 
 def cmd_profile(args: argparse.Namespace) -> None:
     """run_profiling(...) from src/experiments/profiling.py."""
-    # TODO (Jungwoo): needs src/experiments/profiling.py
-    raise NotImplementedError
+    run_profiling(experiments=args.experiments)
 
 
 def cmd_sanity(args: argparse.Namespace) -> None:
@@ -100,8 +127,48 @@ def cmd_sanity(args: argparse.Namespace) -> None:
     overfit_batch on 32 fake images, save loss curve:
     results/sanity/overfit_curve.json and docs/figures/overfit.pdf
     """
-    # TODO (Jungwoo): needs overfit_batch() from src/training/train.py
-    raise NotImplementedError
+    set_seed(0)
+    model_cfg, train_cfg = load_experiment("baseline_p4")
+    device = get_device(train_cfg.device)
+
+    # Initialize the model
+    model = ViT(model_cfg).to(device)
+
+    # Generate a fixed batch of fake images and labels
+    images = torch.randn(
+        32, model_cfg.in_channels,
+        model_cfg.image_size, model_cfg.image_size
+    )
+    labels = torch.randint(0, model_cfg.num_classes, (32,))
+
+    # Repeatedly train on the same batch
+    losses = overfit_batch(
+        model, images, labels, steps=300, lr=train_cfg.lr
+    )
+
+    # Create directories for JSON and PDF files
+    json_path = Path("results/sanity/overfit_curve.json")
+    figure_path = Path("docs/figures/overfit.pdf")
+
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    figure_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Save loss history as JSON
+    with json_path.open("w", encoding="utf-8") as f:
+        json.dump({"losses": losses}, f, indent=4)
+
+    # Plot loss over training steps
+    plt.figure(figsize=(7, 4))
+    plt.plot(range(1, len(losses) + 1), losses)
+    plt.xlabel("Training Step")
+    plt.ylabel("Cross Entropy Loss")
+    plt.title("Tiny Batch Overfit Sanity Check")
+    plt.grid(alpha=0.3)
+    plt.tight_layout()
+
+    # Save the loss curve as a PDF file
+    plt.savefig(figure_path)
+    plt.close()
 
 
 def cmd_trace(args: argparse.Namespace) -> None:
