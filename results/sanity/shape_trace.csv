@@ -1,0 +1,7 @@
+experiment,part,shape
+baseline_p4,input,1 x 3 x 32 x 32
+baseline_p4,patch_embed,1 x 64 x 128
+baseline_p4,token_embed,1 x 65 x 128
+baseline_p4,patch_dropout,1 x 65 x 128
+baseline_p4,encoder,1 x 65 x 128
+baseline_p4,head,1 x 10

@@ -1,0 +1,70 @@
+{
+    "experiment": "smoke",
+    "seed": 0,
+    "split_seed": 0,
+    "config": {
+        "model": {
+            "image_size": 32,
+            "in_channels": 3,
+            "num_classes": 10,
+            "patch_size": 4,
+            "embed_dim": 32,
+            "depth": 2,
+            "num_heads": 4,
+            "mlp_ratio": 4.0,
+            "dropout": 0.0,
+            "attn_dropout": 0.0,
+            "drop_path_rate": 0.1,
+            "patch_dropout_rate": 0.0
+        },
+        "train": {
+            "epochs": 1,
+            "batch_size": 32,
+            "lr": 0.001,
+            "weight_decay": 0.05,
+            "warmup_epochs": 0,
+            "label_smoothing": 0.0,
+            "grad_clip": 1.0,
+            "amp": false,
+            "val_size": 5000,
+            "split_seed": 0,
+            "seeds": [
+                0,
+                1,
+                2
+            ],
+            "data_dir": "data",
+            "out_dir": "results",
+            "num_workers": 2,
+            "device": "cpu",
+            "deterministic": false
+        }
+    },
+    "env": {
+        "python": "3.13.16",
+        "torch": "2.14.1+cu130",
+        "torchvision": "0.29.1+cu130",
+        "numpy": "2.4.6",
+        "cuda": "13.0",
+        "device_name": "NVIDIA L4",
+        "platform": "Linux-6.6.159+-x86_64-with-glibc2.39"
+    },
+    "num_params": 29482,
+    "train_time_s": 0.4460225219999927,
+    "history": [
+        {
+            "epoch": 1,
+            "train_loss": 2.3191484808921814,
+            "train_acc": 0.10546875,
+            "val_loss": 2.311759114265442,
+            "val_acc": 0.125,
+            "lr": 0.0,
+            "epoch_time_s": 0.44596608999998466
+        }
+    ],
+    "test": {
+        "loss": 2.322178840637207,
+        "acc": 0.078125,
+        "n": 64
+    }
+}
