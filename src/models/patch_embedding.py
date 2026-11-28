@@ -46,7 +46,7 @@ class PatchEmbedding(nn.Module):
         self.patch_size = patch_size
         self.in_channels = in_channels
 
-        self.num_patches = (image_size / patch_size)**2
+        self.num_patches = (image_size // patch_size) ** 2
         self.patch_dim = self.in_channels * self.patch_size**2
 
         self.linear1 = nn.Linear(self.patch_dim, embed_dim)
@@ -71,7 +71,7 @@ class PatchEmbedding(nn.Module):
         x = x.permute(0, 2, 4, 1, 3, 5)
 
         # 4. reshape   -> (N, P, p*p*C)
-        x = x.reshape(N, int(self.num_patches), self.patch_dim)
+        x = x.reshape(N, self.num_patches, self.patch_dim)
 
         # 5. Linear    -> (N, P, D)
         x = self.linear1(x)

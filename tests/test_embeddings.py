@@ -30,7 +30,7 @@ def test_patch_embedding_shape(patch_size):
 
 def test_patch_order_is_row_major():
     """
-    Known case: if D = p*p*C and conv weights are identity, row i of output must be
+    Known case: if D = p*p*C and the Linear weight is the identity, row i of output must be
     exactly the manually cut patch i (left to right, top to bottom).
     Catches wrong patch order (column-major or transposed).
     """

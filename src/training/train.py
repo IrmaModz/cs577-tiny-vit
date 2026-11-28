@@ -320,7 +320,7 @@ def train(
         "seed": seed,
         "split_seed": train_cfg.split_seed,
         "config": config_to_dict(model_cfg, train_cfg),
-        "env": get_env_info(),
+        "env": get_env_info(device),
         "num_params": num_params,
         "train_time_s": train_time_s,
         "history": history,

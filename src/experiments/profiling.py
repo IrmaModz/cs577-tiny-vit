@@ -60,7 +60,7 @@ def _time_step(
 
 
 def _peak_mem_mb(device: torch.device) -> float | str:
-    """Peak GPU memory since last reset, in MB. On CPU we can not measure it like this."""
+    """Peak GPU memory since last reset, in MiB (1 MiB = 2**20 bytes). On CPU we can not measure it like this."""
     if device.type == "cuda":
         return torch.cuda.max_memory_allocated(device) / 2**20
     return "n/a"
@@ -120,7 +120,7 @@ def profile_model(
 
     result = {
         "device": dev.type,
-        "gpu_name": get_env_info()["device_name"],  # GPU name on cuda, CPU name otherwise
+        "gpu_name": get_env_info(dev)["device_name"],  # name of the device really used
         "batch_size": batch_size,
         "warmup_iters": warmup_iters,
         "runs": runs,
@@ -181,7 +181,7 @@ def _write_latex_table(df: "pd.DataFrame", path: Path) -> None:
         "% made by src/experiments/profiling.py, dont edit by hand",
         r"\begin{tabular}{llrrrrrr}",
         r"\toprule",
-        r"Experiment & Mode & Tokens & ms/batch & images/s & Peak mem (MB) & Params & GFLOPs/img \\",
+        r"Experiment & Mode & Tokens & ms/batch & images/s & Peak mem (MiB) & Params & GFLOPs/img \\",
         r"\midrule",
     ]
     for _, r in df.iterrows():
