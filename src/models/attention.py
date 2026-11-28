@@ -48,7 +48,7 @@ class MultiHeadSelfAttention(nn.Module):
         self.qkv_weights = nn.Linear(dim, 3*dim)
         self.linear1 = nn.Linear(self.dim, self.dim)
         
-        self.d_h = dim/num_heads
+        self.d_h = dim//num_heads
         self.scale = self.d_h ** (-0.5)
     
 
@@ -67,9 +67,9 @@ class MultiHeadSelfAttention(nn.Module):
         q, k, v = qkv.chunk(3, dim=-1) # (N,T,D)
 
         # To (N,num_heads,T,d_h)
-        q = q.reshape(N, T, self.num_heads, int(self.d_h)).transpose(1, 2)
-        k = k.reshape(N, T, self.num_heads, int(self.d_h)).transpose(1, 2)
-        v = v.reshape(N, T, self.num_heads, int(self.d_h)).transpose(1, 2)
+        q = q.reshape(N, T, self.num_heads, self.d_h).transpose(1, 2)
+        k = k.reshape(N, T, self.num_heads, self.d_h).transpose(1, 2)
+        v = v.reshape(N, T, self.num_heads, self.d_h).transpose(1, 2)
 
         # (N,num_heads,T,T)
         scores = q @ k.transpose(-2, -1) * self.scale

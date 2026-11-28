@@ -5,4 +5,11 @@ data/
 __pycache__/
 *.pyc
 .pytest_cache/
-...
+...*.aux
+*.log
+*.bbl
+*.blg
+*.out
+*.synctex.gz
+.DS_Store
+.github/modernize/

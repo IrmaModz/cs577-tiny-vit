@@ -55,6 +55,7 @@ def configure_determinism(strict: bool) -> None:
     If strict is True: cudnn.deterministic = True, cudnn.benchmark = False and
     torch.use_deterministic_algorithms(True, warn_only=True). Slower but more repeatable.
     If False: cudnn.benchmark = True (faster).
+    Note: warn_only=True, so some operations may still not be fully deterministic
     """
     if strict:
         # some CUDA matrix operations need this setting to be deterministic.
@@ -85,14 +86,16 @@ def get_device(name: str = "auto") -> torch.device:
         raise ValueError("device 'cuda' was asked, but no GPU is available here")
     return torch.device(name)
 
-
-def get_env_info() -> dict:
+def get_env_info(device: torch.device | str | None = None) -> dict:
     """
     Info about where code was run, we save it inside every result JSON.
 
+    Args:
+        device: device the run really used. If None, we only report what is available.
+
     Returns:
         dict with python, torch, torchvision, numpy versions, cuda version,
-        and GPU name (or CPU name if no GPU)
+        the device used, and its name (GPU name or CPU name)
     """
     try:
         import torchvision
@@ -101,10 +104,14 @@ def get_env_info() -> dict:
     except ImportError:
         torchvision_version = None  # not installed
 
-    if torch.cuda.is_available():
-        device_name = torch.cuda.get_device_name(0)
+    if device is not None:
+        used = torch.device(device)
     else:
-        # on some computers processor() gives empty string, then we use machine()
+        used = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    if used.type == "cuda":
+        device_name = torch.cuda.get_device_name(used)
+    else:
         device_name = platform.processor() or platform.machine()
 
     # only strings and None here, so json.dumps always works
@@ -114,6 +121,7 @@ def get_env_info() -> dict:
         "torchvision": torchvision_version,
         "numpy": np.__version__,
         "cuda": torch.version.cuda,  # None when torch has no CUDA
+        "device": used.type,
         "device_name": device_name,
         "platform": platform.platform(),
     }

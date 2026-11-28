@@ -63,8 +63,7 @@ def test_split_is_deterministic():
 def test_eval_transform_has_no_augmentation():
     """Same image through eval transform two times -> identical tensors."""
     # create fake img
-    image = np.random.randint(0, 1, (32, 32, 3), dtype=np.uint8)
-
+    image = np.random.randint(0, 256, (32, 32, 3), dtype=np.uint8)
     # same image transform twice with train=False
     transform = build_transforms(train=False)
     out1 = transform(image)
